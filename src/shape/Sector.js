@@ -35,7 +35,7 @@ class Sector extends Component {
 
   getDeltaAngle(startAngle, endAngle) {
     const sign = Math.sign(endAngle - startAngle);
-    const deltaAngle = Math.min(Math.abs(endAngle - startAngle), 359.9999);
+    const deltaAngle = Math.min(Math.abs(endAngle - startAngle), 359);
 
     return sign * deltaAngle;
   }
