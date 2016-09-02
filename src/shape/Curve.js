@@ -50,6 +50,7 @@ class Curve extends Component {
     ]),
     points: PropTypes.arrayOf(PropTypes.object),
     connectNulls: PropTypes.bool,
+    formatPoints: PropTypes.func,
   };
 
   static defaultProps = {
@@ -66,13 +67,15 @@ class Curve extends Component {
    * @return {String} path
    */
   getPath() {
-    const { type, points, baseLine, layout, connectNulls } = this.props;
+    const { type, points, baseLine, layout, connectNulls, formatPoints } = this.props;
     const curveFactory = getCurveFactory(type, layout);
-    const formatPoints = connectNulls ? points.filter(entry => defined(entry)) : points;
+    const formatedPoints = typeof formatPoints === 'function' ? formatPoints(points) : points;
+    const filteredPoints = connectNulls ? formatedPoints.filter(defined) : formatedPoints;
+
     let lineFunction;
 
     if (_.isArray(baseLine)) {
-      const areaPoints = formatPoints.map((entry, index) => (
+      const areaPoints = filteredPoints.map((entry, index) => (
         { ...entry, base: baseLine[index] }
       ));
       if (layout === 'vertical') {
@@ -104,7 +107,7 @@ class Curve extends Component {
     lineFunction.defined(defined)
                 .curve(curveFactory);
 
-    return lineFunction(formatPoints);
+    return lineFunction(filteredPoints);
   }
 
   render() {
