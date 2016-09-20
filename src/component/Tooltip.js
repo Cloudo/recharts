@@ -2,7 +2,6 @@
  * @fileOverview Tooltip
  */
 import React, { Component, PropTypes } from 'react';
-import pureRender from '../util/PureRender';
 import ReactDOMServer from 'react-dom/server';
 import DefaultTooltipContent from './DefaultTooltipContent';
 import { getStyleString } from '../util/DOMUtils';
@@ -144,16 +143,16 @@ class Tooltip extends Component {
       ...outerStyle,
       position: 'absolute',
       top: translateY,
-      left: translateX
+      left: translateX,
     };
 
     return (
-        <div
-          className="recharts-tooltip-wrapper"
-          style={finalStyle}
-        >
-          {contentItem}
-        </div>
+      <div
+        className="recharts-tooltip-wrapper"
+        style={finalStyle}
+      >
+        {contentItem}
+      </div>
     );
   }
 }
