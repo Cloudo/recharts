@@ -7,7 +7,6 @@ import ReactDOMServer from 'react-dom/server';
 import DefaultTooltipContent from './DefaultTooltipContent';
 import { getStyleString } from '../util/DOMUtils';
 import { isSsr } from '../util/ReactUtils';
-import Animate from 'react-smooth';
 import _ from 'lodash';
 
 const propTypes = {
@@ -113,7 +112,7 @@ class Tooltip extends Component {
   static defaultProps = defaultProps;
 
   render() {
-    const { payload, isAnimationActive, animationDuration, animationEasing } = this.props;
+    const { payload } = this.props;
 
     if (!payload || !payload.length ||
       !payload.filter(entry => (_.isNumber(entry.value) || _.isString(entry.value))).length
@@ -141,22 +140,20 @@ class Tooltip extends Component {
       coordinate.y - box.height - offset :
       coordinate.y + offset, viewBox.y);
 
+    const finalStyle = {
+      ...outerStyle,
+      position: 'absolute',
+      top: translateY,
+      left: translateX
+    };
+
     return (
-      <Animate
-        from={`translate(${translateX}px, ${translateY}px)`}
-        to={`translate(${translateX}px, ${translateY}px)`}
-        duration={animationDuration}
-        isActive={isAnimationActive}
-        easing={animationEasing}
-        attributeName="transform"
-      >
         <div
           className="recharts-tooltip-wrapper"
-          style={outerStyle}
+          style={finalStyle}
         >
           {contentItem}
         </div>
-      </Animate>
     );
   }
 }
