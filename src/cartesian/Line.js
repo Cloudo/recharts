@@ -123,6 +123,12 @@ class Line extends Component {
   }
 
   getTotalLength() {
+    const { isAnimationActive } = this.props;
+
+    if (!isAnimationActive) {
+      return 0;
+    }
+
     const curveDom = findDOMNode(this.refs.animate);
     const totalLength = (curveDom && curveDom.getTotalLength && curveDom.getTotalLength()) || 0;
 
